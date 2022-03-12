@@ -17,10 +17,10 @@ We design some classes to help us construct the AST:
   - **ConstNode:** Node that represents const values.
   - **IdDeclarationNode:** Node that represents a declaration statement.
   - **OperatorNode:** Node that represents operators(e.g. '+', '-', '*', '/', '=' etc.). This kind of node can be used to represent expression of calculation or assignment.
-  - **RepeatNode: **Node that represents *while* or *for* loop.
-  - **TypeSpcfNode: **Node that represents a type specification.
-- **Symbol: **A class to represent identifiers used in the source code. The *name* and *type* attributes stand for the name and type of an identifier respectively, and the *offset* and *index* attributes represent the offset and index in the symbol table.
-- **SymbolTable: **A class that stores all the **Symbol** objects. This data structure is used to solve the problem of *redefinition*.
+  - **RepeatNode:** Node that represents *while* or *for* loop.
+  - **TypeSpcfNode:** Node that represents a type specification.
+- **Symbol:** A class to represent identifiers used in the source code. The *name* and *type* attributes stand for the name and type of an identifier respectively, and the *offset* and *index* attributes represent the offset and index in the symbol table.
+- **SymbolTable:** A class that stores all the **Symbol** objects. This data structure is used to solve the problem of *redefinition*.
 
 The pipeline of this work will be like this:
 
