@@ -1,0 +1,2153 @@
+终端机在文法中未使用
+
+    BRACKETS
+
+
+状态 43 冲突：1 项偏移/归约
+状态 126 冲突：1 项偏移/归约
+
+
+语法
+
+    0 $accept: program $end
+
+    1 program: element
+
+    2 element: function_declaration
+    3        | function_declaration element
+
+    4 assign_op: '='
+
+    5 primary_expr: IDENTIFIER
+    6             | CONSTANT
+    7             | '(' expression ')'
+
+    8 unary_expr: primary_expr
+    9           | unary_operator unary_expr
+
+   10 unary_operator: '+'
+   11               | '-'
+   12               | NOT_OP
+
+   13 pow_expr: unary_expr
+   14         | pow_expr '^' pow_expr
+
+   15 multiplicative_expr: pow_expr
+   16                    | multiplicative_expr '*' pow_expr
+   17                    | multiplicative_expr '/' pow_expr
+   18                    | multiplicative_expr '%' pow_expr
+
+   19 additive_expr: multiplicative_expr
+   20              | additive_expr '+' multiplicative_expr
+   21              | additive_expr '-' multiplicative_expr
+
+   22 relational_expr: additive_expr
+   23                | relational_expr LT_OP additive_expr
+   24                | relational_expr GT_OP additive_expr
+   25                | relational_expr LE_OP additive_expr
+   26                | relational_expr GE_OP additive_expr
+
+   27 equality_expr: relational_expr
+   28              | equality_expr EQ_OP relational_expr
+   29              | equality_expr NE_OP relational_expr
+
+   30 logical_and_expr: equality_expr
+   31                 | logical_and_expr AND_OP equality_expr
+
+   32 logical_or_expr: logical_and_expr
+   33                | logical_or_expr OR_OP logical_and_expr
+
+   34 assign_expr: logical_or_expr
+   35            | unary_expr assign_op assign_expr
+
+   36 expression: assign_expr
+   37           | expression ',' assign_expr
+
+   38 type_specifier: INT
+   39               | VOID
+
+   40 function_declaration: type_specifier IDENTIFIER '(' ')' compound_k
+   41                     | main_function
+
+   42 main_function: VOID MAIN '(' ')' compound_k
+
+   43 compound_k: '{' statement '}'
+
+   44 sentences: sentence
+   45          | compound_k
+
+   46 statement: sentences
+   47          | statement sentences
+
+   48 var_declaration: type_specifier init_declaration_list
+
+   49 init_declaration_list: init_declarator
+   50                      | init_declaration_list ',' init_declarator
+
+   51 init_declarator: declarator
+   52                | declarator assign_op initializer
+
+   53 declarator: IDENTIFIER
+   54           | '(' declarator ')'
+
+   55 initializer: assign_expr
+
+   56 comma_expr: expression
+   57           | comma_expr ',' comma_expr
+   58           | %empty
+   59           | write_k
+   60           | read_k
+
+   61 comma_termination: comma_expr ';'
+
+   62 semicolon_sentence: comma_termination
+   63                   | var_declaration ';'
+
+   64 sentence: semicolon_sentence
+   65         | repeat_k
+   66         | condition_statement
+   67         | return_stmt
+
+   68 repeat_k: for_statement
+   69         | while_statement
+
+   70 for_head: FOR '(' semicolon_sentence comma_termination comma_expr ')'
+
+   71 for_statement: for_head sentences
+
+   72 while_head: WHILE '(' comma_expr ')'
+
+   73 while_statement: while_head sentences
+
+   74 write_k: PRINTF '(' IDENTIFIER ')'
+   75        | PRINTF '(' CONSTANT ')'
+
+   76 read_k: SCANF '(' IDENTIFIER ')'
+
+   77 condition_statement: IF '(' comma_expr ')' sentences
+   78                    | IF '(' comma_expr ')' sentences ELSE sentences
+
+   79 return_stmt: RETURN ';'
+
+
+终结语词，附有它们出现处的规则
+
+    $end (0) 0
+    '%' (37) 18
+    '(' (40) 7 40 42 54 70 72 74 75 76 77 78
+    ')' (41) 7 40 42 54 70 72 74 75 76 77 78
+    '*' (42) 16
+    '+' (43) 10 20
+    ',' (44) 37 50 57
+    '-' (45) 11 21
+    '/' (47) 17
+    ';' (59) 61 63 79
+    '=' (61) 4
+    '^' (94) 14
+    '{' (123) 43
+    '}' (125) 43
+    error (256)
+    IDENTIFIER (258) 5 40 53 74 76
+    CONSTANT (259) 6 75
+    IF (260) 77 78
+    ELSE (261) 78
+    WHILE (262) 72
+    FOR (263) 70
+    RETURN (264) 79
+    LE_OP (265) 25
+    GE_OP (266) 26
+    EQ_OP (267) 28
+    NE_OP (268) 29
+    LT_OP (269) 23
+    GT_OP (270) 24
+    AND_OP (271) 31
+    OR_OP (272) 33
+    NOT_OP (273) 12
+    INT (274) 38
+    VOID (275) 39 42
+    MAIN (276) 42
+    PRINTF (277) 74 75
+    SCANF (278) 76
+    UMINUS (279)
+    BRACKETS (280)
+    IFX (281)
+
+
+非终结语词，附有它们出现处的规则
+
+    $accept (40)
+        on left: 0
+    program (41)
+        on left: 1
+        on right: 0
+    element (42)
+        on left: 2 3
+        on right: 1 3
+    assign_op (43)
+        on left: 4
+        on right: 35 52
+    primary_expr (44)
+        on left: 5 6 7
+        on right: 8
+    unary_expr (45)
+        on left: 8 9
+        on right: 9 13 35
+    unary_operator (46)
+        on left: 10 11 12
+        on right: 9
+    pow_expr (47)
+        on left: 13 14
+        on right: 14 15 16 17 18
+    multiplicative_expr (48)
+        on left: 15 16 17 18
+        on right: 16 17 18 19 20 21
+    additive_expr (49)
+        on left: 19 20 21
+        on right: 20 21 22 23 24 25 26
+    relational_expr (50)
+        on left: 22 23 24 25 26
+        on right: 23 24 25 26 27 28 29
+    equality_expr (51)
+        on left: 27 28 29
+        on right: 28 29 30 31
+    logical_and_expr (52)
+        on left: 30 31
+        on right: 31 32 33
+    logical_or_expr (53)
+        on left: 32 33
+        on right: 33 34
+    assign_expr (54)
+        on left: 34 35
+        on right: 35 36 37 55
+    expression (55)
+        on left: 36 37
+        on right: 7 37 56
+    type_specifier (56)
+        on left: 38 39
+        on right: 40 48
+    function_declaration (57)
+        on left: 40 41
+        on right: 2 3
+    main_function (58)
+        on left: 42
+        on right: 41
+    compound_k (59)
+        on left: 43
+        on right: 40 42 45
+    sentences (60)
+        on left: 44 45
+        on right: 46 47 71 73 77 78
+    statement (61)
+        on left: 46 47
+        on right: 43 47
+    var_declaration (62)
+        on left: 48
+        on right: 63
+    init_declaration_list (63)
+        on left: 49 50
+        on right: 48 50
+    init_declarator (64)
+        on left: 51 52
+        on right: 49 50
+    declarator (65)
+        on left: 53 54
+        on right: 51 52 54
+    initializer (66)
+        on left: 55
+        on right: 52
+    comma_expr (67)
+        on left: 56 57 58 59 60
+        on right: 57 61 70 72 77 78
+    comma_termination (68)
+        on left: 61
+        on right: 62 70
+    semicolon_sentence (69)
+        on left: 62 63
+        on right: 64 70
+    sentence (70)
+        on left: 64 65 66 67
+        on right: 44
+    repeat_k (71)
+        on left: 68 69
+        on right: 65
+    for_head (72)
+        on left: 70
+        on right: 71
+    for_statement (73)
+        on left: 71
+        on right: 68
+    while_head (74)
+        on left: 72
+        on right: 73
+    while_statement (75)
+        on left: 73
+        on right: 69
+    write_k (76)
+        on left: 74 75
+        on right: 59
+    read_k (77)
+        on left: 76
+        on right: 60
+    condition_statement (78)
+        on left: 77 78
+        on right: 66
+    return_stmt (79)
+        on left: 79
+        on right: 67
+
+
+状态 0
+
+    0 $accept: . program $end
+
+    INT   偏移，并进入状态 1
+    VOID  偏移，并进入状态 2
+
+    program               转到状态 3
+    element               转到状态 4
+    type_specifier        转到状态 5
+    function_declaration  转到状态 6
+    main_function         转到状态 7
+
+
+状态 1
+
+   38 type_specifier: INT .
+
+    $default  使用规则 38 以归约 (type_specifier)
+
+
+状态 2
+
+   39 type_specifier: VOID .
+   42 main_function: VOID . MAIN '(' ')' compound_k
+
+    MAIN  偏移，并进入状态 8
+
+    $default  使用规则 39 以归约 (type_specifier)
+
+
+状态 3
+
+    0 $accept: program . $end
+
+    $end  偏移，并进入状态 9
+
+
+状态 4
+
+    1 program: element .
+
+    $default  使用规则 1 以归约 (program)
+
+
+状态 5
+
+   40 function_declaration: type_specifier . IDENTIFIER '(' ')' compound_k
+
+    IDENTIFIER  偏移，并进入状态 10
+
+
+状态 6
+
+    2 element: function_declaration .
+    3        | function_declaration . element
+
+    INT   偏移，并进入状态 1
+    VOID  偏移，并进入状态 2
+
+    $default  使用规则 2 以归约 (element)
+
+    element               转到状态 11
+    type_specifier        转到状态 5
+    function_declaration  转到状态 6
+    main_function         转到状态 7
+
+
+状态 7
+
+   41 function_declaration: main_function .
+
+    $default  使用规则 41 以归约 (function_declaration)
+
+
+状态 8
+
+   42 main_function: VOID MAIN . '(' ')' compound_k
+
+    '('  偏移，并进入状态 12
+
+
+状态 9
+
+    0 $accept: program $end .
+
+    $default  接受
+
+
+状态 10
+
+   40 function_declaration: type_specifier IDENTIFIER . '(' ')' compound_k
+
+    '('  偏移，并进入状态 13
+
+
+状态 11
+
+    3 element: function_declaration element .
+
+    $default  使用规则 3 以归约 (element)
+
+
+状态 12
+
+   42 main_function: VOID MAIN '(' . ')' compound_k
+
+    ')'  偏移，并进入状态 14
+
+
+状态 13
+
+   40 function_declaration: type_specifier IDENTIFIER '(' . ')' compound_k
+
+    ')'  偏移，并进入状态 15
+
+
+状态 14
+
+   42 main_function: VOID MAIN '(' ')' . compound_k
+
+    '{'  偏移，并进入状态 16
+
+    compound_k  转到状态 17
+
+
+状态 15
+
+   40 function_declaration: type_specifier IDENTIFIER '(' ')' . compound_k
+
+    '{'  偏移，并进入状态 16
+
+    compound_k  转到状态 18
+
+
+状态 16
+
+   43 compound_k: '{' . statement '}'
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    IF          偏移，并进入状态 21
+    WHILE       偏移，并进入状态 22
+    FOR         偏移，并进入状态 23
+    RETURN      偏移，并进入状态 24
+    NOT_OP      偏移，并进入状态 25
+    INT         偏移，并进入状态 1
+    VOID        偏移，并进入状态 26
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+    '{'         偏移，并进入状态 16
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    type_specifier       转到状态 44
+    compound_k           转到状态 45
+    sentences            转到状态 46
+    statement            转到状态 47
+    var_declaration      转到状态 48
+    comma_expr           转到状态 49
+    comma_termination    转到状态 50
+    semicolon_sentence   转到状态 51
+    sentence             转到状态 52
+    repeat_k             转到状态 53
+    for_head             转到状态 54
+    for_statement        转到状态 55
+    while_head           转到状态 56
+    while_statement      转到状态 57
+    write_k              转到状态 58
+    read_k               转到状态 59
+    condition_statement  转到状态 60
+    return_stmt          转到状态 61
+
+
+状态 17
+
+   42 main_function: VOID MAIN '(' ')' compound_k .
+
+    $default  使用规则 42 以归约 (main_function)
+
+
+状态 18
+
+   40 function_declaration: type_specifier IDENTIFIER '(' ')' compound_k .
+
+    $default  使用规则 40 以归约 (function_declaration)
+
+
+状态 19
+
+    5 primary_expr: IDENTIFIER .
+
+    $default  使用规则 5 以归约 (primary_expr)
+
+
+状态 20
+
+    6 primary_expr: CONSTANT .
+
+    $default  使用规则 6 以归约 (primary_expr)
+
+
+状态 21
+
+   77 condition_statement: IF . '(' comma_expr ')' sentences
+   78                    | IF . '(' comma_expr ')' sentences ELSE sentences
+
+    '('  偏移，并进入状态 62
+
+
+状态 22
+
+   72 while_head: WHILE . '(' comma_expr ')'
+
+    '('  偏移，并进入状态 63
+
+
+状态 23
+
+   70 for_head: FOR . '(' semicolon_sentence comma_termination comma_expr ')'
+
+    '('  偏移，并进入状态 64
+
+
+状态 24
+
+   79 return_stmt: RETURN . ';'
+
+    ';'  偏移，并进入状态 65
+
+
+状态 25
+
+   12 unary_operator: NOT_OP .
+
+    $default  使用规则 12 以归约 (unary_operator)
+
+
+状态 26
+
+   39 type_specifier: VOID .
+
+    $default  使用规则 39 以归约 (type_specifier)
+
+
+状态 27
+
+   74 write_k: PRINTF . '(' IDENTIFIER ')'
+   75        | PRINTF . '(' CONSTANT ')'
+
+    '('  偏移，并进入状态 66
+
+
+状态 28
+
+   76 read_k: SCANF . '(' IDENTIFIER ')'
+
+    '('  偏移，并进入状态 67
+
+
+状态 29
+
+   10 unary_operator: '+' .
+
+    $default  使用规则 10 以归约 (unary_operator)
+
+
+状态 30
+
+   11 unary_operator: '-' .
+
+    $default  使用规则 11 以归约 (unary_operator)
+
+
+状态 31
+
+    7 primary_expr: '(' . expression ')'
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 68
+
+
+状态 32
+
+    8 unary_expr: primary_expr .
+
+    $default  使用规则 8 以归约 (unary_expr)
+
+
+状态 33
+
+   13 pow_expr: unary_expr .
+   35 assign_expr: unary_expr . assign_op assign_expr
+
+    '='  偏移，并进入状态 69
+
+    $default  使用规则 13 以归约 (pow_expr)
+
+    assign_op  转到状态 70
+
+
+状态 34
+
+    9 unary_expr: unary_operator . unary_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr    转到状态 32
+    unary_expr      转到状态 71
+    unary_operator  转到状态 34
+
+
+状态 35
+
+   14 pow_expr: pow_expr . '^' pow_expr
+   15 multiplicative_expr: pow_expr .
+
+    '^'  偏移，并进入状态 72
+
+    $default  使用规则 15 以归约 (multiplicative_expr)
+
+
+状态 36
+
+   16 multiplicative_expr: multiplicative_expr . '*' pow_expr
+   17                    | multiplicative_expr . '/' pow_expr
+   18                    | multiplicative_expr . '%' pow_expr
+   19 additive_expr: multiplicative_expr .
+
+    '*'  偏移，并进入状态 73
+    '/'  偏移，并进入状态 74
+    '%'  偏移，并进入状态 75
+
+    $default  使用规则 19 以归约 (additive_expr)
+
+
+状态 37
+
+   20 additive_expr: additive_expr . '+' multiplicative_expr
+   21              | additive_expr . '-' multiplicative_expr
+   22 relational_expr: additive_expr .
+
+    '+'  偏移，并进入状态 76
+    '-'  偏移，并进入状态 77
+
+    $default  使用规则 22 以归约 (relational_expr)
+
+
+状态 38
+
+   23 relational_expr: relational_expr . LT_OP additive_expr
+   24                | relational_expr . GT_OP additive_expr
+   25                | relational_expr . LE_OP additive_expr
+   26                | relational_expr . GE_OP additive_expr
+   27 equality_expr: relational_expr .
+
+    LE_OP  偏移，并进入状态 78
+    GE_OP  偏移，并进入状态 79
+    LT_OP  偏移，并进入状态 80
+    GT_OP  偏移，并进入状态 81
+
+    $default  使用规则 27 以归约 (equality_expr)
+
+
+状态 39
+
+   28 equality_expr: equality_expr . EQ_OP relational_expr
+   29              | equality_expr . NE_OP relational_expr
+   30 logical_and_expr: equality_expr .
+
+    EQ_OP  偏移，并进入状态 82
+    NE_OP  偏移，并进入状态 83
+
+    $default  使用规则 30 以归约 (logical_and_expr)
+
+
+状态 40
+
+   31 logical_and_expr: logical_and_expr . AND_OP equality_expr
+   32 logical_or_expr: logical_and_expr .
+
+    AND_OP  偏移，并进入状态 84
+
+    $default  使用规则 32 以归约 (logical_or_expr)
+
+
+状态 41
+
+   33 logical_or_expr: logical_or_expr . OR_OP logical_and_expr
+   34 assign_expr: logical_or_expr .
+
+    OR_OP  偏移，并进入状态 85
+
+    $default  使用规则 34 以归约 (assign_expr)
+
+
+状态 42
+
+   36 expression: assign_expr .
+
+    $default  使用规则 36 以归约 (expression)
+
+
+状态 43
+
+   37 expression: expression . ',' assign_expr
+   56 comma_expr: expression .
+
+    ','  偏移，并进入状态 86
+
+    ','       [使用规则 56 以归约 (comma_expr)]
+    $default  使用规则 56 以归约 (comma_expr)
+
+
+状态 44
+
+   48 var_declaration: type_specifier . init_declaration_list
+
+    IDENTIFIER  偏移，并进入状态 87
+    '('         偏移，并进入状态 88
+
+    init_declaration_list  转到状态 89
+    init_declarator        转到状态 90
+    declarator             转到状态 91
+
+
+状态 45
+
+   45 sentences: compound_k .
+
+    $default  使用规则 45 以归约 (sentences)
+
+
+状态 46
+
+   46 statement: sentences .
+
+    $default  使用规则 46 以归约 (statement)
+
+
+状态 47
+
+   43 compound_k: '{' statement . '}'
+   47 statement: statement . sentences
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    IF          偏移，并进入状态 21
+    WHILE       偏移，并进入状态 22
+    FOR         偏移，并进入状态 23
+    RETURN      偏移，并进入状态 24
+    NOT_OP      偏移，并进入状态 25
+    INT         偏移，并进入状态 1
+    VOID        偏移，并进入状态 26
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+    '{'         偏移，并进入状态 16
+    '}'         偏移，并进入状态 92
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    type_specifier       转到状态 44
+    compound_k           转到状态 45
+    sentences            转到状态 93
+    var_declaration      转到状态 48
+    comma_expr           转到状态 49
+    comma_termination    转到状态 50
+    semicolon_sentence   转到状态 51
+    sentence             转到状态 52
+    repeat_k             转到状态 53
+    for_head             转到状态 54
+    for_statement        转到状态 55
+    while_head           转到状态 56
+    while_statement      转到状态 57
+    write_k              转到状态 58
+    read_k               转到状态 59
+    condition_statement  转到状态 60
+    return_stmt          转到状态 61
+
+
+状态 48
+
+   63 semicolon_sentence: var_declaration . ';'
+
+    ';'  偏移，并进入状态 94
+
+
+状态 49
+
+   57 comma_expr: comma_expr . ',' comma_expr
+   61 comma_termination: comma_expr . ';'
+
+    ','  偏移，并进入状态 95
+    ';'  偏移，并进入状态 96
+
+
+状态 50
+
+   62 semicolon_sentence: comma_termination .
+
+    $default  使用规则 62 以归约 (semicolon_sentence)
+
+
+状态 51
+
+   64 sentence: semicolon_sentence .
+
+    $default  使用规则 64 以归约 (sentence)
+
+
+状态 52
+
+   44 sentences: sentence .
+
+    $default  使用规则 44 以归约 (sentences)
+
+
+状态 53
+
+   65 sentence: repeat_k .
+
+    $default  使用规则 65 以归约 (sentence)
+
+
+状态 54
+
+   71 for_statement: for_head . sentences
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    IF          偏移，并进入状态 21
+    WHILE       偏移，并进入状态 22
+    FOR         偏移，并进入状态 23
+    RETURN      偏移，并进入状态 24
+    NOT_OP      偏移，并进入状态 25
+    INT         偏移，并进入状态 1
+    VOID        偏移，并进入状态 26
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+    '{'         偏移，并进入状态 16
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    type_specifier       转到状态 44
+    compound_k           转到状态 45
+    sentences            转到状态 97
+    var_declaration      转到状态 48
+    comma_expr           转到状态 49
+    comma_termination    转到状态 50
+    semicolon_sentence   转到状态 51
+    sentence             转到状态 52
+    repeat_k             转到状态 53
+    for_head             转到状态 54
+    for_statement        转到状态 55
+    while_head           转到状态 56
+    while_statement      转到状态 57
+    write_k              转到状态 58
+    read_k               转到状态 59
+    condition_statement  转到状态 60
+    return_stmt          转到状态 61
+
+
+状态 55
+
+   68 repeat_k: for_statement .
+
+    $default  使用规则 68 以归约 (repeat_k)
+
+
+状态 56
+
+   73 while_statement: while_head . sentences
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    IF          偏移，并进入状态 21
+    WHILE       偏移，并进入状态 22
+    FOR         偏移，并进入状态 23
+    RETURN      偏移，并进入状态 24
+    NOT_OP      偏移，并进入状态 25
+    INT         偏移，并进入状态 1
+    VOID        偏移，并进入状态 26
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+    '{'         偏移，并进入状态 16
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    type_specifier       转到状态 44
+    compound_k           转到状态 45
+    sentences            转到状态 98
+    var_declaration      转到状态 48
+    comma_expr           转到状态 49
+    comma_termination    转到状态 50
+    semicolon_sentence   转到状态 51
+    sentence             转到状态 52
+    repeat_k             转到状态 53
+    for_head             转到状态 54
+    for_statement        转到状态 55
+    while_head           转到状态 56
+    while_statement      转到状态 57
+    write_k              转到状态 58
+    read_k               转到状态 59
+    condition_statement  转到状态 60
+    return_stmt          转到状态 61
+
+
+状态 57
+
+   69 repeat_k: while_statement .
+
+    $default  使用规则 69 以归约 (repeat_k)
+
+
+状态 58
+
+   59 comma_expr: write_k .
+
+    $default  使用规则 59 以归约 (comma_expr)
+
+
+状态 59
+
+   60 comma_expr: read_k .
+
+    $default  使用规则 60 以归约 (comma_expr)
+
+
+状态 60
+
+   66 sentence: condition_statement .
+
+    $default  使用规则 66 以归约 (sentence)
+
+
+状态 61
+
+   67 sentence: return_stmt .
+
+    $default  使用规则 67 以归约 (sentence)
+
+
+状态 62
+
+   77 condition_statement: IF '(' . comma_expr ')' sentences
+   78                    | IF '(' . comma_expr ')' sentences ELSE sentences
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    comma_expr           转到状态 99
+    write_k              转到状态 58
+    read_k               转到状态 59
+
+
+状态 63
+
+   72 while_head: WHILE '(' . comma_expr ')'
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    comma_expr           转到状态 100
+    write_k              转到状态 58
+    read_k               转到状态 59
+
+
+状态 64
+
+   70 for_head: FOR '(' . semicolon_sentence comma_termination comma_expr ')'
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    INT         偏移，并进入状态 1
+    VOID        偏移，并进入状态 26
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    type_specifier       转到状态 44
+    var_declaration      转到状态 48
+    comma_expr           转到状态 49
+    comma_termination    转到状态 50
+    semicolon_sentence   转到状态 101
+    write_k              转到状态 58
+    read_k               转到状态 59
+
+
+状态 65
+
+   79 return_stmt: RETURN ';' .
+
+    $default  使用规则 79 以归约 (return_stmt)
+
+
+状态 66
+
+   74 write_k: PRINTF '(' . IDENTIFIER ')'
+   75        | PRINTF '(' . CONSTANT ')'
+
+    IDENTIFIER  偏移，并进入状态 102
+    CONSTANT    偏移，并进入状态 103
+
+
+状态 67
+
+   76 read_k: SCANF '(' . IDENTIFIER ')'
+
+    IDENTIFIER  偏移，并进入状态 104
+
+
+状态 68
+
+    7 primary_expr: '(' expression . ')'
+   37 expression: expression . ',' assign_expr
+
+    ')'  偏移，并进入状态 105
+    ','  偏移，并进入状态 86
+
+
+状态 69
+
+    4 assign_op: '=' .
+
+    $default  使用规则 4 以归约 (assign_op)
+
+
+状态 70
+
+   35 assign_expr: unary_expr assign_op . assign_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 106
+
+
+状态 71
+
+    9 unary_expr: unary_operator unary_expr .
+
+    $default  使用规则 9 以归约 (unary_expr)
+
+
+状态 72
+
+   14 pow_expr: pow_expr '^' . pow_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr    转到状态 32
+    unary_expr      转到状态 107
+    unary_operator  转到状态 34
+    pow_expr        转到状态 108
+
+
+状态 73
+
+   16 multiplicative_expr: multiplicative_expr '*' . pow_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr    转到状态 32
+    unary_expr      转到状态 107
+    unary_operator  转到状态 34
+    pow_expr        转到状态 109
+
+
+状态 74
+
+   17 multiplicative_expr: multiplicative_expr '/' . pow_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr    转到状态 32
+    unary_expr      转到状态 107
+    unary_operator  转到状态 34
+    pow_expr        转到状态 110
+
+
+状态 75
+
+   18 multiplicative_expr: multiplicative_expr '%' . pow_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr    转到状态 32
+    unary_expr      转到状态 107
+    unary_operator  转到状态 34
+    pow_expr        转到状态 111
+
+
+状态 76
+
+   20 additive_expr: additive_expr '+' . multiplicative_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 112
+
+
+状态 77
+
+   21 additive_expr: additive_expr '-' . multiplicative_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 113
+
+
+状态 78
+
+   25 relational_expr: relational_expr LE_OP . additive_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 114
+
+
+状态 79
+
+   26 relational_expr: relational_expr GE_OP . additive_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 115
+
+
+状态 80
+
+   23 relational_expr: relational_expr LT_OP . additive_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 116
+
+
+状态 81
+
+   24 relational_expr: relational_expr GT_OP . additive_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 117
+
+
+状态 82
+
+   28 equality_expr: equality_expr EQ_OP . relational_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 118
+
+
+状态 83
+
+   29 equality_expr: equality_expr NE_OP . relational_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 119
+
+
+状态 84
+
+   31 logical_and_expr: logical_and_expr AND_OP . equality_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 120
+
+
+状态 85
+
+   33 logical_or_expr: logical_or_expr OR_OP . logical_and_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 107
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 121
+
+
+状态 86
+
+   37 expression: expression ',' . assign_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 122
+
+
+状态 87
+
+   53 declarator: IDENTIFIER .
+
+    $default  使用规则 53 以归约 (declarator)
+
+
+状态 88
+
+   54 declarator: '(' . declarator ')'
+
+    IDENTIFIER  偏移，并进入状态 87
+    '('         偏移，并进入状态 88
+
+    declarator  转到状态 123
+
+
+状态 89
+
+   48 var_declaration: type_specifier init_declaration_list .
+   50 init_declaration_list: init_declaration_list . ',' init_declarator
+
+    ','  偏移，并进入状态 124
+
+    $default  使用规则 48 以归约 (var_declaration)
+
+
+状态 90
+
+   49 init_declaration_list: init_declarator .
+
+    $default  使用规则 49 以归约 (init_declaration_list)
+
+
+状态 91
+
+   51 init_declarator: declarator .
+   52                | declarator . assign_op initializer
+
+    '='  偏移，并进入状态 69
+
+    $default  使用规则 51 以归约 (init_declarator)
+
+    assign_op  转到状态 125
+
+
+状态 92
+
+   43 compound_k: '{' statement '}' .
+
+    $default  使用规则 43 以归约 (compound_k)
+
+
+状态 93
+
+   47 statement: statement sentences .
+
+    $default  使用规则 47 以归约 (statement)
+
+
+状态 94
+
+   63 semicolon_sentence: var_declaration ';' .
+
+    $default  使用规则 63 以归约 (semicolon_sentence)
+
+
+状态 95
+
+   57 comma_expr: comma_expr ',' . comma_expr
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    comma_expr           转到状态 126
+    write_k              转到状态 58
+    read_k               转到状态 59
+
+
+状态 96
+
+   61 comma_termination: comma_expr ';' .
+
+    $default  使用规则 61 以归约 (comma_termination)
+
+
+状态 97
+
+   71 for_statement: for_head sentences .
+
+    $default  使用规则 71 以归约 (for_statement)
+
+
+状态 98
+
+   73 while_statement: while_head sentences .
+
+    $default  使用规则 73 以归约 (while_statement)
+
+
+状态 99
+
+   57 comma_expr: comma_expr . ',' comma_expr
+   77 condition_statement: IF '(' comma_expr . ')' sentences
+   78                    | IF '(' comma_expr . ')' sentences ELSE sentences
+
+    ')'  偏移，并进入状态 127
+    ','  偏移，并进入状态 95
+
+
+状态 100
+
+   57 comma_expr: comma_expr . ',' comma_expr
+   72 while_head: WHILE '(' comma_expr . ')'
+
+    ')'  偏移，并进入状态 128
+    ','  偏移，并进入状态 95
+
+
+状态 101
+
+   70 for_head: FOR '(' semicolon_sentence . comma_termination comma_expr ')'
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    comma_expr           转到状态 49
+    comma_termination    转到状态 129
+    write_k              转到状态 58
+    read_k               转到状态 59
+
+
+状态 102
+
+   74 write_k: PRINTF '(' IDENTIFIER . ')'
+
+    ')'  偏移，并进入状态 130
+
+
+状态 103
+
+   75 write_k: PRINTF '(' CONSTANT . ')'
+
+    ')'  偏移，并进入状态 131
+
+
+状态 104
+
+   76 read_k: SCANF '(' IDENTIFIER . ')'
+
+    ')'  偏移，并进入状态 132
+
+
+状态 105
+
+    7 primary_expr: '(' expression ')' .
+
+    $default  使用规则 7 以归约 (primary_expr)
+
+
+状态 106
+
+   35 assign_expr: unary_expr assign_op assign_expr .
+
+    $default  使用规则 35 以归约 (assign_expr)
+
+
+状态 107
+
+   13 pow_expr: unary_expr .
+
+    $default  使用规则 13 以归约 (pow_expr)
+
+
+状态 108
+
+   14 pow_expr: pow_expr . '^' pow_expr
+   14         | pow_expr '^' pow_expr .
+
+    '^'  偏移，并进入状态 72
+
+    $default  使用规则 14 以归约 (pow_expr)
+
+
+状态 109
+
+   14 pow_expr: pow_expr . '^' pow_expr
+   16 multiplicative_expr: multiplicative_expr '*' pow_expr .
+
+    '^'  偏移，并进入状态 72
+
+    $default  使用规则 16 以归约 (multiplicative_expr)
+
+
+状态 110
+
+   14 pow_expr: pow_expr . '^' pow_expr
+   17 multiplicative_expr: multiplicative_expr '/' pow_expr .
+
+    '^'  偏移，并进入状态 72
+
+    $default  使用规则 17 以归约 (multiplicative_expr)
+
+
+状态 111
+
+   14 pow_expr: pow_expr . '^' pow_expr
+   18 multiplicative_expr: multiplicative_expr '%' pow_expr .
+
+    '^'  偏移，并进入状态 72
+
+    $default  使用规则 18 以归约 (multiplicative_expr)
+
+
+状态 112
+
+   16 multiplicative_expr: multiplicative_expr . '*' pow_expr
+   17                    | multiplicative_expr . '/' pow_expr
+   18                    | multiplicative_expr . '%' pow_expr
+   20 additive_expr: additive_expr '+' multiplicative_expr .
+
+    '*'  偏移，并进入状态 73
+    '/'  偏移，并进入状态 74
+    '%'  偏移，并进入状态 75
+
+    $default  使用规则 20 以归约 (additive_expr)
+
+
+状态 113
+
+   16 multiplicative_expr: multiplicative_expr . '*' pow_expr
+   17                    | multiplicative_expr . '/' pow_expr
+   18                    | multiplicative_expr . '%' pow_expr
+   21 additive_expr: additive_expr '-' multiplicative_expr .
+
+    '*'  偏移，并进入状态 73
+    '/'  偏移，并进入状态 74
+    '%'  偏移，并进入状态 75
+
+    $default  使用规则 21 以归约 (additive_expr)
+
+
+状态 114
+
+   20 additive_expr: additive_expr . '+' multiplicative_expr
+   21              | additive_expr . '-' multiplicative_expr
+   25 relational_expr: relational_expr LE_OP additive_expr .
+
+    '+'  偏移，并进入状态 76
+    '-'  偏移，并进入状态 77
+
+    $default  使用规则 25 以归约 (relational_expr)
+
+
+状态 115
+
+   20 additive_expr: additive_expr . '+' multiplicative_expr
+   21              | additive_expr . '-' multiplicative_expr
+   26 relational_expr: relational_expr GE_OP additive_expr .
+
+    '+'  偏移，并进入状态 76
+    '-'  偏移，并进入状态 77
+
+    $default  使用规则 26 以归约 (relational_expr)
+
+
+状态 116
+
+   20 additive_expr: additive_expr . '+' multiplicative_expr
+   21              | additive_expr . '-' multiplicative_expr
+   23 relational_expr: relational_expr LT_OP additive_expr .
+
+    '+'  偏移，并进入状态 76
+    '-'  偏移，并进入状态 77
+
+    $default  使用规则 23 以归约 (relational_expr)
+
+
+状态 117
+
+   20 additive_expr: additive_expr . '+' multiplicative_expr
+   21              | additive_expr . '-' multiplicative_expr
+   24 relational_expr: relational_expr GT_OP additive_expr .
+
+    '+'  偏移，并进入状态 76
+    '-'  偏移，并进入状态 77
+
+    $default  使用规则 24 以归约 (relational_expr)
+
+
+状态 118
+
+   23 relational_expr: relational_expr . LT_OP additive_expr
+   24                | relational_expr . GT_OP additive_expr
+   25                | relational_expr . LE_OP additive_expr
+   26                | relational_expr . GE_OP additive_expr
+   28 equality_expr: equality_expr EQ_OP relational_expr .
+
+    LE_OP  偏移，并进入状态 78
+    GE_OP  偏移，并进入状态 79
+    LT_OP  偏移，并进入状态 80
+    GT_OP  偏移，并进入状态 81
+
+    $default  使用规则 28 以归约 (equality_expr)
+
+
+状态 119
+
+   23 relational_expr: relational_expr . LT_OP additive_expr
+   24                | relational_expr . GT_OP additive_expr
+   25                | relational_expr . LE_OP additive_expr
+   26                | relational_expr . GE_OP additive_expr
+   29 equality_expr: equality_expr NE_OP relational_expr .
+
+    LE_OP  偏移，并进入状态 78
+    GE_OP  偏移，并进入状态 79
+    LT_OP  偏移，并进入状态 80
+    GT_OP  偏移，并进入状态 81
+
+    $default  使用规则 29 以归约 (equality_expr)
+
+
+状态 120
+
+   28 equality_expr: equality_expr . EQ_OP relational_expr
+   29              | equality_expr . NE_OP relational_expr
+   31 logical_and_expr: logical_and_expr AND_OP equality_expr .
+
+    EQ_OP  偏移，并进入状态 82
+    NE_OP  偏移，并进入状态 83
+
+    $default  使用规则 31 以归约 (logical_and_expr)
+
+
+状态 121
+
+   31 logical_and_expr: logical_and_expr . AND_OP equality_expr
+   33 logical_or_expr: logical_or_expr OR_OP logical_and_expr .
+
+    AND_OP  偏移，并进入状态 84
+
+    $default  使用规则 33 以归约 (logical_or_expr)
+
+
+状态 122
+
+   37 expression: expression ',' assign_expr .
+
+    $default  使用规则 37 以归约 (expression)
+
+
+状态 123
+
+   54 declarator: '(' declarator . ')'
+
+    ')'  偏移，并进入状态 133
+
+
+状态 124
+
+   50 init_declaration_list: init_declaration_list ',' . init_declarator
+
+    IDENTIFIER  偏移，并进入状态 87
+    '('         偏移，并进入状态 88
+
+    init_declarator  转到状态 134
+    declarator       转到状态 91
+
+
+状态 125
+
+   52 init_declarator: declarator assign_op . initializer
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 135
+    initializer          转到状态 136
+
+
+状态 126
+
+   57 comma_expr: comma_expr . ',' comma_expr
+   57           | comma_expr ',' comma_expr .
+
+    ','  偏移，并进入状态 95
+
+    ','       [使用规则 57 以归约 (comma_expr)]
+    $default  使用规则 57 以归约 (comma_expr)
+
+
+状态 127
+
+   77 condition_statement: IF '(' comma_expr ')' . sentences
+   78                    | IF '(' comma_expr ')' . sentences ELSE sentences
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    IF          偏移，并进入状态 21
+    WHILE       偏移，并进入状态 22
+    FOR         偏移，并进入状态 23
+    RETURN      偏移，并进入状态 24
+    NOT_OP      偏移，并进入状态 25
+    INT         偏移，并进入状态 1
+    VOID        偏移，并进入状态 26
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+    '{'         偏移，并进入状态 16
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    type_specifier       转到状态 44
+    compound_k           转到状态 45
+    sentences            转到状态 137
+    var_declaration      转到状态 48
+    comma_expr           转到状态 49
+    comma_termination    转到状态 50
+    semicolon_sentence   转到状态 51
+    sentence             转到状态 52
+    repeat_k             转到状态 53
+    for_head             转到状态 54
+    for_statement        转到状态 55
+    while_head           转到状态 56
+    while_statement      转到状态 57
+    write_k              转到状态 58
+    read_k               转到状态 59
+    condition_statement  转到状态 60
+    return_stmt          转到状态 61
+
+
+状态 128
+
+   72 while_head: WHILE '(' comma_expr ')' .
+
+    $default  使用规则 72 以归约 (while_head)
+
+
+状态 129
+
+   70 for_head: FOR '(' semicolon_sentence comma_termination . comma_expr ')'
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    NOT_OP      偏移，并进入状态 25
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    comma_expr           转到状态 138
+    write_k              转到状态 58
+    read_k               转到状态 59
+
+
+状态 130
+
+   74 write_k: PRINTF '(' IDENTIFIER ')' .
+
+    $default  使用规则 74 以归约 (write_k)
+
+
+状态 131
+
+   75 write_k: PRINTF '(' CONSTANT ')' .
+
+    $default  使用规则 75 以归约 (write_k)
+
+
+状态 132
+
+   76 read_k: SCANF '(' IDENTIFIER ')' .
+
+    $default  使用规则 76 以归约 (read_k)
+
+
+状态 133
+
+   54 declarator: '(' declarator ')' .
+
+    $default  使用规则 54 以归约 (declarator)
+
+
+状态 134
+
+   50 init_declaration_list: init_declaration_list ',' init_declarator .
+
+    $default  使用规则 50 以归约 (init_declaration_list)
+
+
+状态 135
+
+   55 initializer: assign_expr .
+
+    $default  使用规则 55 以归约 (initializer)
+
+
+状态 136
+
+   52 init_declarator: declarator assign_op initializer .
+
+    $default  使用规则 52 以归约 (init_declarator)
+
+
+状态 137
+
+   77 condition_statement: IF '(' comma_expr ')' sentences .
+   78                    | IF '(' comma_expr ')' sentences . ELSE sentences
+
+    ELSE  偏移，并进入状态 139
+
+    $default  使用规则 77 以归约 (condition_statement)
+
+
+状态 138
+
+   57 comma_expr: comma_expr . ',' comma_expr
+   70 for_head: FOR '(' semicolon_sentence comma_termination comma_expr . ')'
+
+    ')'  偏移，并进入状态 140
+    ','  偏移，并进入状态 95
+
+
+状态 139
+
+   78 condition_statement: IF '(' comma_expr ')' sentences ELSE . sentences
+
+    IDENTIFIER  偏移，并进入状态 19
+    CONSTANT    偏移，并进入状态 20
+    IF          偏移，并进入状态 21
+    WHILE       偏移，并进入状态 22
+    FOR         偏移，并进入状态 23
+    RETURN      偏移，并进入状态 24
+    NOT_OP      偏移，并进入状态 25
+    INT         偏移，并进入状态 1
+    VOID        偏移，并进入状态 26
+    PRINTF      偏移，并进入状态 27
+    SCANF       偏移，并进入状态 28
+    '+'         偏移，并进入状态 29
+    '-'         偏移，并进入状态 30
+    '('         偏移，并进入状态 31
+    '{'         偏移，并进入状态 16
+
+    $default  使用规则 58 以归约 (comma_expr)
+
+    primary_expr         转到状态 32
+    unary_expr           转到状态 33
+    unary_operator       转到状态 34
+    pow_expr             转到状态 35
+    multiplicative_expr  转到状态 36
+    additive_expr        转到状态 37
+    relational_expr      转到状态 38
+    equality_expr        转到状态 39
+    logical_and_expr     转到状态 40
+    logical_or_expr      转到状态 41
+    assign_expr          转到状态 42
+    expression           转到状态 43
+    type_specifier       转到状态 44
+    compound_k           转到状态 45
+    sentences            转到状态 141
+    var_declaration      转到状态 48
+    comma_expr           转到状态 49
+    comma_termination    转到状态 50
+    semicolon_sentence   转到状态 51
+    sentence             转到状态 52
+    repeat_k             转到状态 53
+    for_head             转到状态 54
+    for_statement        转到状态 55
+    while_head           转到状态 56
+    while_statement      转到状态 57
+    write_k              转到状态 58
+    read_k               转到状态 59
+    condition_statement  转到状态 60
+    return_stmt          转到状态 61
+
+
+状态 140
+
+   70 for_head: FOR '(' semicolon_sentence comma_termination comma_expr ')' .
+
+    $default  使用规则 70 以归约 (for_head)
+
+
+状态 141
+
+   78 condition_statement: IF '(' comma_expr ')' sentences ELSE sentences .
+
+    $default  使用规则 78 以归约 (condition_statement)

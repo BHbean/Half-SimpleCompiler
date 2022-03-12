@@ -1,0 +1,18 @@
+void main()
+{
+	int a, b, c;
+	int a = - (1 - 2);
+	{
+		int b = 0;
+		int c = 1;
+	}
+
+    	if(a == 1){
+		printf(2);
+	}
+    
+	for(; i < 10; i = i + 1){
+		a = a + 20;
+	}
+}
+
